@@ -1,0 +1,217 @@
+.wrapper {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: #8b9cb5;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+.backBtn:hover {
+  color: #e7e9ea;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #1d9bf0;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brandName {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.progress {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+}
+
+.progressActive {
+  flex: 1;
+  height: 3px;
+  background: #1d9bf0;
+  border-radius: 9999px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 3px;
+  background: #2f3336;
+  border-radius: 9999px;
+}
+
+.title {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 0.25rem;
+}
+
+.subtitle {
+  color: #6e767d;
+  font-size: 0.875rem;
+  margin: 0 0 1.75rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.label {
+  color: #e7e9ea;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 14px;
+  color: #6e767d;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  background: #1e2732;
+  border: 1px solid #2f3336;
+  border-radius: 9999px;
+  color: #e7e9ea;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.25rem;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.inputWithIcon {
+  padding-left: 2.5rem;
+}
+
+.input::placeholder {
+  color: #6e767d;
+}
+
+.input:focus {
+  border-color: #1d9bf0;
+}
+
+.input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.erro {
+  color: #f4212e;
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem;
+}
+
+.termsBox {
+  background: #1e2732;
+  border: 1px solid #2f3336;
+  border-radius: 12px;
+  color: #8b9cb5;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: #e7e9ea;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+
+.checkbox {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: #1d9bf0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.link {
+  color: #1d9bf0;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.continueBtn {
+  width: 100%;
+  background: #1d9bf0;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.continueBtn:hover:not(:disabled) {
+  background: #1a8cd8;
+}
+
+.continueBtn:disabled {
+  background: #0e4f7a;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

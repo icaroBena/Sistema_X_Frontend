@@ -1,0 +1,36 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: #000;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.main {
+  flex: 1;
+  border-left: 1px solid #2f3336;
+  border-right: 1px solid #2f3336;
+  min-width: 0;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.emptyFeed {
+  color: #6e767d;
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+}
+
+.loading {
+  min-height: 100vh;
+  background: #000;
+  color: #e7e9ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
