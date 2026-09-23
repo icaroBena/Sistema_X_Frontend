@@ -9,9 +9,9 @@ import { buscarPerfilUsuario } from "../services/auth";
 
 type Usuario = {
   id: number;
-  nome: string;
-  email: string;
-  celular: string | null;
+  nome_usuario: string;
+  email: string | null;
+  telefone: string | null;
   data_nascimento: string | null;
   total_posts: number;
 };
@@ -63,13 +63,16 @@ export default function ProfilePage() {
 
   return (
     <div className={styles.layout}>
-      <Sidebar nomeUsuario={usuario.nome} emailUsuario={usuario.email} />
+      <Sidebar
+        nomeUsuario={usuario.nome_usuario}
+        emailUsuario={usuario.email ?? usuario.telefone ?? ""}
+      />
 
       <main className={styles.main}>
         <ProfileHeader
-          nome={usuario.nome}
+          nomeUsuario={usuario.nome_usuario}
           email={usuario.email}
-          celular={usuario.celular}
+          telefone={usuario.telefone}
           dataNascimento={usuario.data_nascimento}
           totalPosts={usuario.total_posts}
         />
@@ -78,7 +81,7 @@ export default function ProfilePage() {
             <p className={styles.emptyFeed}>Você ainda não fez nenhum post.</p>
           ) : (
             posts.map((post) => (
-              <PostCard key={post.id} post={post} nomeAutor={usuario.nome} />
+              <PostCard key={post.id} post={post} nomeAutor={usuario.nome_usuario} />
             ))
           )}
         </div>

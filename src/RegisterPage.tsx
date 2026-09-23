@@ -3,19 +3,20 @@ import { useNavigate } from "react-router-dom";
 import styles from "./RegisterPage.module.css";
 import { cadastrarUsuario } from "./services/auth";
 
+
 export default function RegisterPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
 
   // Passo 1
-  const [name, setName] = useState("");
+  const [nomeUsuario, setNomeUsuario] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [telefone, setTelefone] = useState("");
 
   // Passo 2
-  const [birthdate, setBirthdate] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
 
   // Passo 3
   const [accepted, setAccepted] = useState(false);
@@ -23,24 +24,56 @@ export default function RegisterPage() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
+ const validarPasso1 = () => {
+    if (!nomeUsuario.trim()) {
+      setErro("Nome de usuário é obrigatório.");
+      return false;
+    }
+    if (nomeUsuario.length > 30) {
+      setErro("Nome de usuário deve ter no máximo 30 caracteres.");
+      return false;
+    }
+    if (!email.trim()) {
+      setErro("E-mail é obrigatório.");
+      return false;
+    }
+    return true;
+  };
+
+  const validarPasso2 = () => {
+    if (!dataNascimento) {
+      setErro("Data de nascimento é obrigatória.");
+      return false;
+    }
+    if (senha.length < 8) {
+      setErro("Senha deve possuir no mínimo 8 caracteres.");
+      return false;
+    }
+    if (senha !== confirmarSenha) {
+      setErro("As senhas não coincidem.");
+      return false;
+    }
+    return true;
+  };
+
+  const avancarPasso = (proximo: number) => {
+    setErro("");
+    if (proximo === 2 && !validarPasso1()) return;
+    if (proximo === 3 && !validarPasso2()) return;
+    setStep(proximo);
+  };
+
   const handleSubmit = async () => {
     setErro("");
-
-    if (password !== confirmPassword) {
-      setErro("As senhas não coincidem.");
-      return;
-    }
-
     setCarregando(true);
 
     try {
       const resposta = await cadastrarUsuario({
-        nome: name,
-        email,
-        celular: phone,
-        senha: password,
-        data_nascimento: birthdate,
-        aceite_termos: accepted,
+        nome_usuario: nomeUsuario,
+        email: email || undefined,
+        telefone: telefone || undefined,
+        senha,
+        data_nascimento: dataNascimento,
       });
 
       if (resposta.sucesso) {
@@ -59,9 +92,18 @@ export default function RegisterPage() {
     <div className={styles.wrapper}>
       <div className={styles.container}>
 
-        <button className={styles.backBtn} onClick={() => setStep((s) => Math.max(1, s - 1))}>
-          ← Voltar
-        </button>
+        <button
+  className={styles.backBtn}
+  onClick={() => {
+    if (step === 1) {
+      navigate("/");
+    } else {
+      setStep((s) => s - 1);
+    }
+  }}
+>
+  ← Voltar
+</button>
 
         <div className={styles.brand}>
           <div className={styles.logo}>X</div>
@@ -80,19 +122,25 @@ export default function RegisterPage() {
             <p className={styles.subtitle}>Passo 1 de 3 — Informações básicas</p>
 
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="name">Nome completo</label>
+              <label className={styles.label} htmlFor="nomeUsuario">
+                Nome de usuário <span className={styles.required}>*</span>
+              </label>
               <input
-                id="name"
+                id="nomeUsuario"
                 type="text"
-                placeholder="Seu nome"
+                placeholder="ex: joaosilva"
+                maxLength={30}
                 className={styles.input}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={nomeUsuario}
+                onChange={(e) => setNomeUsuario(e.target.value)}
               />
+              <span className={styles.counter}>{nomeUsuario.length}/30</span>
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="email">Email</label>
+              <label className={styles.label} htmlFor="email">
+                E-mail <span className={styles.required}>*</span>
+              </label>
               <div className={styles.inputWrapper}>
                 <span className={styles.inputIcon}>@</span>
                 <input
@@ -107,18 +155,23 @@ export default function RegisterPage() {
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="phone">Celular</label>
+              <label className={styles.label} htmlFor="telefone">
+                Telefone <span className={styles.optional}>(opcional)</span>
+              </label>
               <input
-                id="phone"
+                id="telefone"
                 type="tel"
                 placeholder="+55 (11) 9 9999-9999"
                 className={styles.input}
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={telefone}
+                onChange={(e) => setTelefone(e.target.value)}
               />
             </div>
 
-            <button className={styles.continueBtn} onClick={() => setStep(2)}>
+
+            {erro && <p className={styles.erro}>{erro}</p>}
+
+            <button className={styles.continueBtn} onClick={() => avancarPasso(2)}>
               Continuar →
             </button>
           </>
@@ -130,43 +183,49 @@ export default function RegisterPage() {
             <p className={styles.subtitle}>Passo 2 de 3 — Dados de acesso</p>
 
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="birthdate">Data de nascimento</label>
+              <label className={styles.label} htmlFor="dataNascimento">
+                Data de nascimento <span className={styles.required}>*</span>
+              </label>
               <input
-                id="birthdate"
+                id="dataNascimento"
                 type="date"
                 className={styles.input}
-                value={birthdate}
-                onChange={(e) => setBirthdate(e.target.value)}
+                value={dataNascimento}
+                onChange={(e) => setDataNascimento(e.target.value)}
               />
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="password">Senha</label>
+              <label className={styles.label} htmlFor="senha">
+                Senha <span className={styles.required}>*</span>
+              </label>
               <input
-                id="password"
+                id="senha"
                 type="password"
                 placeholder="Mín. 8 caracteres"
                 className={styles.input}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
               />
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="confirmPassword">Confirmar senha</label>
+              <label className={styles.label} htmlFor="confirmarSenha">
+                Confirmar senha <span className={styles.required}>*</span>
+              </label>
               <input
-                id="confirmPassword"
+                id="confirmarSenha"
                 type="password"
                 placeholder="Repita a senha"
                 className={styles.input}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={confirmarSenha}
+                onChange={(e) => setConfirmarSenha(e.target.value)}
               />
             </div>
 
             {erro && <p className={styles.erro}>{erro}</p>}
 
-            <button className={styles.continueBtn} onClick={() => setStep(3)}>
+            <button className={styles.continueBtn} onClick={() => avancarPasso(3)}>
               Continuar →
             </button>
           </>

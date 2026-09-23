@@ -128,3 +128,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.settingsIcon {
+  color: #6e767d;
+  flex-shrink: 0;
+}

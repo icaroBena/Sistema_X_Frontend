@@ -6,18 +6,24 @@ import { loginUsuario } from "./services/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [identificador, setIdentificador] = useState("");
+  const [senha, setSenha] = useState("");
+  const [showSenha, setShowSenha] = useState(false);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
   const handleSubmit = async () => {
     setErro("");
+
+    if (!identificador.trim() || !senha.trim()) {
+      setErro("Preencha todos os campos.");
+      return;
+    }
+
     setCarregando(true);
 
     try {
-      const resposta = await loginUsuario(email, password);
+      const resposta = await loginUsuario(identificador, senha);
 
       if (resposta.sucesso) {
         localStorage.setItem("usuario", JSON.stringify(resposta.usuario));
@@ -47,37 +53,36 @@ export default function LoginPage() {
           <h2 className={styles.formTitle}>Entrar no X</h2>
 
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="email">Email</label>
-            <div className={styles.inputWrapper}>
-              <span className={styles.inputIcon}>@</span>
-              <input
-                id="email"
-                type="email"
-                placeholder="email@exemplo.com"
-                className={styles.input}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
+            <label className={styles.label} htmlFor="identificador">
+              E-mail ou nome de usuário
+            </label>
+            <input
+              id="identificador"
+              type="text"
+              placeholder="email@exemplo.com ou @usuario"
+              className={styles.input}
+              value={identificador}
+              onChange={(e) => setIdentificador(e.target.value)}
+            />
           </div>
 
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="password">Senha</label>
+            <label className={styles.label} htmlFor="senha">Senha</label>
             <div className={styles.inputWrapper}>
               <input
-                id="password"
-                type={showPassword ? "text" : "password"}
+                id="senha"
+                type={showSenha ? "text" : "password"}
                 placeholder="••••••••"
                 className={styles.input}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
               />
               <button
                 type="button"
                 className={styles.eyeBtn}
-                onClick={() => setShowPassword((v) => !v)}
+                onClick={() => setShowSenha((v) => !v)}
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showSenha ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
           </div>
